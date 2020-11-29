@@ -31,6 +31,8 @@
 *.out
 *.app
 
+/Sha1/*
+
 
 /.vs
 ## Ignore Visual Studio temporary files, build results, and
