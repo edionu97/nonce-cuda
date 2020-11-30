@@ -55,6 +55,7 @@
     </Link>
     <CudaCompile>
       <TargetMachinePlatform>64</TargetMachinePlatform>
+      <AdditionalOptions>-Xptxas -v %(AdditionalOptions)</AdditionalOptions>
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -77,9 +78,15 @@
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CudaCompile Include="kernel.cu" />
+    <CudaCompile Include="compute_nonce.cu" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cuda_helpers\cuda_data_convertor.h" />
+    <ClInclude Include="cuda_helpers\cuda_device_helpers.h" />
+    <ClInclude Include="cuda_helpers\cuda_utils.h" />
+    <ClInclude Include="cuda_helpers\kernel_helpers.cuh" />
+    <ClInclude Include="gpu\nonce.cuh" />
+    <ClInclude Include="helpers\nonce_helpers.h" />
     <ClInclude Include="Helpers\sha1_helpers.h" />
     <ClInclude Include="hasher\sha1_hasher.h" />
     <ClInclude Include="helpers\string_helpers.h" />

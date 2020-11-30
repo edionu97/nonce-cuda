@@ -11,58 +11,6 @@
 
 class sha1_hasher
 {
-public:
-
-	/**
-	 * \brief
-	 * This method it is used for adding characters/strings into the current computation
-	 * \param data : the data that will be added
-	 */
-	__device__ void update(const char* data)
-	{
-		if (!is_context_initialized_)
-		{
-			is_context_initialized_ = true;
-			context_ = create_sha1_context();
-		}
-
-		//execute the sha1 update logic
-		sha1_update(
-			context_,
-			reinterpret_cast<unsigned char*>(const_cast<char*>(data)),
-			static_cast<uint32_t>(string_helpers::device_strlen(data)));
-	}
-
-	/**
-	 * \brief
-	 * This method get the final digest figures, and clears all the data
-	 */
-	__device__ void get_final(char* result_buffer)
-	{
-		//get the results
-		uint8_t results[20];
-		sha1_final(results, context_);
-
-		//iterate through characters
-		char hex_buffer[3] = {};
-		for (auto character : results)
-		{
-			//convert the int value to hex values
-			memset(hex_buffer, 0, sizeof(hex_buffer));
-
-			//convert the character into hex value
-			// ReSharper disable once CppDeprecatedEntity
-			//sprintf(hex_buffer, "%02x", character);
-			string_helpers::byte_to_hex(character, hex_buffer);
-
-			//copy the result_buffer into the final buffer
-			memcpy(result_buffer + string_helpers::device_strlen(result_buffer), hex_buffer, string_helpers::device_strlen(hex_buffer));
-		}
-
-		is_context_initialized_ = false;
-	}
-
-private:
 	/**
 	 * \brief
 	 * This represents the core of the algorithm, a 512 bit structure used for computing the hash values
@@ -325,5 +273,77 @@ private:
 
 	secure_hash_algorithm_context context_;
 	bool is_context_initialized_ = false;
+
+public:
+
+	/**
+	 * \brief
+	 * This method it is used for adding characters/strings into the current computation
+	 * \param data : the data that will be added
+	 */
+	__device__ void update(const char* data)
+	{
+		if (!is_context_initialized_)
+		{
+			is_context_initialized_ = true;
+			context_ = create_sha1_context();
+		}
+
+		//execute the sha1 update logic
+		sha1_update(
+			context_,
+			reinterpret_cast<unsigned char*>(const_cast<char*>(data)),
+			static_cast<uint32_t>(string_helpers::device_strlen(data)));
+	}
+
+	/**
+	 * \brief
+	 * This method get the final digest figures, and clears all the data
+	 */
+	__device__ void get_final(char* result_buffer)
+	{
+		//get the results
+		uint8_t results[20];
+		sha1_final(results, context_);
+
+		//iterate through characters
+		char hex_buffer[3] = {};
+		for (auto character : results)
+		{
+			//convert the int value to hex values
+			memset(hex_buffer, 0, sizeof(hex_buffer));
+
+			//convert the character into hex value
+			// ReSharper disable once CppDeprecatedEntity
+			//sprintf(hex_buffer, "%02x", character);
+			string_helpers::byte_to_hex(character, hex_buffer);
+
+			//copy the result_buffer into the final buffer
+			memcpy(result_buffer + string_helpers::device_strlen(result_buffer), hex_buffer, string_helpers::device_strlen(hex_buffer));
+		}
+
+		is_context_initialized_ = false;
+	}
+
+	/**
+	 * \brief
+	 * Getter for context (creates a copy of context and returns it)
+	 * \return a reference to sha1 context
+	 */
+	__device__ secure_hash_algorithm_context get_context_copy() const 
+	{
+		return secure_hash_algorithm_context::get_copy(context_);
+	}
+	
+	/**
+	 * \brief
+	 * Context setter
+	 * \param new_context : the new value for the context
+	 */
+	__device__ void set_context(const secure_hash_algorithm_context& new_context)
+	{
+		context_ = new_context;
+		is_context_initialized_ = true;
+	}
 };
 
