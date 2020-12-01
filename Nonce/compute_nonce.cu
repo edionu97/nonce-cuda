@@ -14,6 +14,14 @@
 
 using namespace  gpu_nonce_computation;
 
+std::ostream& operator << (std::ostream& out, const std::pair<std::string, std::string>& value)
+{
+	out << "\n\nNonce found\n";
+	out << "Nonce value: " << value.first << '\n';
+	out << "Computed sha1 for nonce: " << value.second << '\n';
+
+	return out;
+}
 
 class nonce
 {
@@ -98,12 +106,11 @@ private:
 
 				if (result.first)
 				{
-					std::cout << "Found!" << '\n';
 					return  get_result(result, nonce_prefix);
 				}
 
 				std::cout << "Processed: " << solution_chunk.size() << " elements, no nonce found, keep trying...\n\n";
-				solution_chunk.clear();
+				solution_chunk = std::vector<std::string>();
 			}
 
 			//add the other values
@@ -249,10 +256,13 @@ private:
 			return  {};
 		}
 
-		return {
+		std::pair<std::string, std::string> nonce = {
 			prefix + computation_result.second,
 			sha1_hasher_.compute_multiple_sha1(prefix, { computation_result.second }).back()
 		};
+
+		std::cout << nonce << '\n';
+		return nonce;
 	}
 
 
@@ -262,15 +272,6 @@ private:
 
 	const configuration& configuration_;
 };
-
-std::ostream& operator << (std::ostream& out, const std::pair<std::string, std::string>& value)
-{
-	out << "\n\nNonce found\n";
-	out << "Nonce value: " << value.first << '\n';
-	out << "Computed sha1 for nonce: " << value.second << '\n';
-
-	return out;
-}
 
 using namespace cuda_print_utils;
 
@@ -299,12 +300,12 @@ auto main() -> int  // NOLINT(bugprone-exception-escape)
 		std::cout << cuda_device_interaction.get_device_property(config.device_name) << '\n';
 
 		nonce nonce_computer{ config };
-		
+
 		std::cout << "Nonce prefix: " << config.prefix << '\n';
 		std::cout << "Desired suffix: " << config.suffix << '\n';
 
 		//get the nonce
-		std::cout << nonce_computer.get_nonce(config.prefix, config.suffix);
+		nonce_computer.get_nonce(config.prefix, config.suffix);
 	}
 	catch (std::exception& e)
 	{
