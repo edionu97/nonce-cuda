@@ -121,8 +121,6 @@ namespace statistics
 				//print the duration
 				out << end.second << elapsed_time / 1000 << " sec\n";
 			}
-
-			out << "Total elapsed time: " << get_total_time_as_ms() / 1000 << " sec\n";
 		}
 
 		/// <summary>
@@ -132,11 +130,11 @@ namespace statistics
 		void report(std::ostream& out)
 		{
 			out << "Computed time periods for last round values\n\n";
-			
+
 			//print time periods
 			print_time_periods(out);
 
-			if(elapsed_time_.empty())
+			if (elapsed_time_.empty())
 			{
 				return;
 			}

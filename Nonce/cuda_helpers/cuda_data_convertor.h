@@ -68,7 +68,7 @@ public:
 			const auto bytes_size = sizeof(T) * array.size();
 			//allocate memory
 			cuda_device_helpers::check(cudaMalloc(reinterpret_cast<void**>(&device_array_pointer), bytes_size));
-			//copy values
+			//copy generate_nonce_alphabet
 			cuda_device_helpers::check(cudaMemcpy(device_array_pointer, &array[0], bytes_size, cudaMemcpyHostToDevice));
 		}
 		catch (std::exception& e)

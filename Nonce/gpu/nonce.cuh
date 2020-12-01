@@ -5,7 +5,7 @@
 #include "device_launch_parameters.h"
 
 //user defined
-#include "../hasher/sha1_hasher.h"
+#include "../hasher/device_sha1_hasher.h"
 #include "../cuda_helpers/cuda_utils.h"
 #include "../helpers/nonce_helpers.h"
 #include "../helpers/string_helpers.h"
@@ -89,7 +89,7 @@ namespace gpu_nonce_computation
 		const auto ends_with_size = static_cast<int>(string_helpers::device_strlen(device_data.suffix_data));
 
 		//create a hasher instance
-		sha1_hasher hasher{};
+		device_sha1_hasher hasher{};
 
 		//compute the context for the prefix
 		hasher.update(device_data.prefix_data);
@@ -120,17 +120,17 @@ namespace gpu_nonce_computation
 			//get the final result
 			hasher.get_final(result);
 
-			//if the result does not end with desired suffix skip the values
+			//if the result does not end with desired suffix skip the generate_nonce_alphabet
 			const auto result_length = static_cast<int>(string_helpers::device_strlen(result));
 			if (!string_helpers::ends_with(result, device_data.suffix_data, result_length, ends_with_size))
 			{
 				continue;
 			}
 
-			//set the proper values (mark that we found  the value and return from function)
+			//set the proper generate_nonce_alphabet (mark that we found  the value and return from function)
 			out_data[global_thread_index].found = true;
 			out_data[global_thread_index].word_index = index;
-
+			
 			return;
 		}
 	}

@@ -81,6 +81,7 @@
     <CudaCompile Include="compute_nonce.cu" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resources\config\configuration.h" />
     <ClInclude Include="cuda_helpers\cuda_data_convertor.h" />
     <ClInclude Include="cuda_helpers\cuda_device_helpers.h" />
     <ClInclude Include="cuda_helpers\cuda_utils.h" />
@@ -88,11 +89,26 @@
     <ClInclude Include="gpu\nonce.cuh" />
     <ClInclude Include="helpers\nonce_helpers.h" />
     <ClInclude Include="Helpers\sha1_helpers.h" />
-    <ClInclude Include="hasher\sha1_hasher.h" />
+    <ClInclude Include="hasher\device_sha1_hasher.h" />
     <ClInclude Include="helpers\string_helpers.h" />
+    <ClInclude Include="hasher\host_sha1_hasher.h" />
+    <ClInclude Include="resources\manager\resources_manager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="resources\config.json">
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 11.1.targets" />
+    <Import Project="packages\nlohmann.json.3.2.0\build\native\nlohmann.json.targets" Condition="Exists('packages\nlohmann.json.3.2.0\build\native\nlohmann.json.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\nlohmann.json.3.2.0\build\native\nlohmann.json.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\nlohmann.json.3.2.0\build\native\nlohmann.json.targets'))" />
+  </Target>
 </Project>

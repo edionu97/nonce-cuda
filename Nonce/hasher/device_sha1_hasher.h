@@ -9,11 +9,11 @@
 #include "../helpers/sha1_helpers.h"
 #include "../helpers/string_helpers.h"
 
-class sha1_hasher
+class device_sha1_hasher
 {
 	/**
 	 * \brief
-	 * This represents the core of the algorithm, a 512 bit structure used for computing the hash values
+	 * This represents the core of the algorithm, a 512 bit structure used for computing the hash generate_nonce_alphabet
 	 */
 	struct secure_hash_algorithm_context
 	{
@@ -32,7 +32,7 @@ class sha1_hasher
 			//initialize the context
 			secure_hash_algorithm_context ctx{};
 
-			//copy the values
+			//copy the generate_nonce_alphabet
 			memcpy(&ctx.state, &value_to_be_copied.state, sizeof(state));
 			memcpy(&ctx.count, &value_to_be_copied.count, sizeof(count));
 			memcpy(&ctx.buffer, &value_to_be_copied.buffer, sizeof(buffer));
@@ -58,7 +58,7 @@ class sha1_hasher
 		context.state[3] = 0x10325476;
 		context.state[4] = 0xC3D2E1F0;
 
-		//set the values to the count buffer
+		//set the generate_nonce_alphabet to the count buffer
 		context.count[0] = context.count[1] = 0;
 
 		//return the context
@@ -259,7 +259,7 @@ class sha1_hasher
 		SHA1_R4(c, d, e, a, b, 78);
 		SHA1_R4(b, c, d, e, a, 79);
 
-		//add the values back into the state
+		//add the generate_nonce_alphabet back into the state
 		state[0] += a;
 		state[1] += b;
 		state[2] += c;
@@ -310,7 +310,7 @@ public:
 		char hex_buffer[3] = {};
 		for (auto character : results)
 		{
-			//convert the int value to hex values
+			//convert the int value to hex generate_nonce_alphabet
 			memset(hex_buffer, 0, sizeof(hex_buffer));
 
 			//convert the character into hex value

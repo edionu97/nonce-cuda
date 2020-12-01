@@ -1,0 +1,12 @@
+{
+  "cuda": {
+    "deviceName": "GeForce GTX 1070",
+    "maxThreadsPerBlock": 128,
+    "threadChunksNumber": 50
+  },
+  "nonce": {
+    "prefix": "e",
+    "shaSuffix": "eebdc"
+  },
+  "cpuGeneratedChunkSize": 200000
+}
