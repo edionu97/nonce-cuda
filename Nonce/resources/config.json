@@ -5,8 +5,8 @@
     "threadChunksNumber": 50
   },
   "nonce": {
-    "prefix": "n",
-    "shaSuffix": "de0bd7e"
+    "prefix": "abc",
+    "shaSuffix": "88"
   },
   "cpuGeneratedChunkSize": 1000000
 }
