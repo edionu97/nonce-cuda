@@ -275,9 +275,13 @@ private:
 
 using namespace cuda_print_utils;
 
-// prefix : e, sufix eebdc
+/*
+	prefix : e, sufix eebdc
+	Nonce value : ea6K5 sha1 is 8699397b07444a59ad7a0dcf478110026d0eebdc
 
-//Nonce value : ea6K5 sha1 is 8699397b07444a59ad7a0dcf478110026d0eebdc
+	prefix: n, suffix de0bd7e
+	Nonce value : nonce sha1 is 49afa7eb90ee7b404b57e1a5794642bd6de0bd7e
+*/
 
 auto main() -> int  // NOLINT(bugprone-exception-escape)
 {
